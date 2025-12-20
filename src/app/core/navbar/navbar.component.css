@@ -1,0 +1,15 @@
+:host ::ng-deep .p-menubar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #F0070C 0%, #CC26D5 50%, #7702FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-right: 2rem;
+  cursor: pointer;
+}
