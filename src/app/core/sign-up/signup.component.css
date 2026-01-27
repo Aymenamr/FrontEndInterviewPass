@@ -1,0 +1,75 @@
+/* signup.component.css */
+
+/* Tab Active State */
+.active-tab {
+    color: #32B599 !important;
+    border-bottom-color: #32B599 !important;
+}
+
+/* src/styles.css */
+
+/* Modernize the MultiSelect Chip */
+::ng-deep .p-multiselect-token {
+    background: #32B599 !important;
+    color: white !important;
+    border-radius: 9999px !important;
+    /* Makes it a pill */
+    padding: 4px 12px !important;
+    margin: 2px !important;
+    font-weight: 500 !important;
+}
+
+
+
+/* 1. Hide the standard PrimeNG checkboxes */
+::ng-deep .p-multiselect-item .p-checkbox {
+    display: none !important;
+}
+
+/* 2. Fix the field internal layout to wrap chips */
+::ng-deep .p-multiselect-label {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    padding: 6px 12px !important;
+}
+
+/* 3. Hide the default PrimeNG internal tokens so only our custom ones show */
+::ng-deep .p-multiselect-token {
+    display: none !important;
+}
+
+/* 4. Ensure the dropdown items look clean */
+::ng-deep .p-multiselect-item {
+    padding: 10px 14px !important;
+}
+
+
+/* Both must have the exact same font properties for alignment */
+.phone-input, .mask-text {
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 1.25rem !important;
+    letter-spacing: 2px;
+    /* Adjust this to match the gap in your photo */
+}
+
+/* Style for the dashes */
+.mask-text {
+    color: #cbd5e1;
+    /* Light gray dashes */
+    white-space: pre;
+    /* Important to keep leading spaces */
+    margin-top: 4px;
+    /* Adjust vertical alignment if dashes look too high/low */
+}
+
+/* Style for the typed numbers */
+.phone-input {
+    color: #334155;
+    background-color: transparent !important;
+}
+
+/* Ensure PrimeNG doesn't override transparency */
+:host ::ng-deep .p-inputtext {
+    background: transparent !important;
+}
