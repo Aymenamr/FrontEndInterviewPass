@@ -67,17 +67,23 @@
 
             <div class="space-y-2">
               <label class="font-semibold text-gray-700 block">Field</label>
-              <p-dropdown formControlName="fieldId" (onShow)="onFieldDropdownOpen()" [options]="fields.value()"
-                optionLabel="name" optionValue="id" placeholder="Select Field"
-                styleClass="w-full h-12 rounded-xl border-gray-200"
-                [ngClass]="{'ng-invalid ng-dirty': form.get('fieldId')?.touched && form.get('fieldId')?.invalid}">
-              </p-dropdown>
+             <p-select
+  formControlName="fieldId"
+  [options]="fields.value()"
+          (onShow)="onFieldDropdownOpen()"
+  optionLabel="name"
+  optionValue="id"
+  placeholder="Select Field"
+  class="w-full h-12 rounded-xl border-gray-200"
+  [ngClass]="{'ng-invalid ng-dirty': form.get('fieldId')?.touched && form.get('fieldId')?.invalid}">
+</p-select>
+
             </div>
 
             <div class="space-y-2">
               <label class="font-semibold text-gray-700 block">Skills</label>
               <p-autoComplete formControlName="skillIds" [suggestions]="filteredSkills()"
-                (completeMethod)="filterSkills($event)" field="name" [multiple]="true" [dropdown]="true" [unique]="true"
+                (completeMethod)="filterSkills($event)" field="name" [multiple]="true"   [unique]="true"
                 placeholder="Search skills..." styleClass="w-full"
                 inputStyleClass="!min-h-12 !rounded-xl !border-gray-200"
                 [ngClass]="{'ng-invalid ng-dirty': form.get('skillIds')?.touched && form.get('skillIds')?.invalid}">
@@ -113,7 +119,7 @@
             <div class="relative pb-6">
               <div class="flex flex-row items-center gap-3 w-full">
 
-                <p-dropdown [options]="countries()" 
+                <p-select [options]="countries()" 
                   [ngModel]="selectedCountry()" 
                   (ngModelChange)="selectedCountry.set($event)" 
                   [ngModelOptions]="{standalone: true}" 
@@ -136,7 +142,7 @@
                       <span class="ml-auto text-xs text-gray-400">({{country.dialCode}})</span>
                     </div>
                   </ng-template>
-                </p-dropdown>
+                </p-select>
 
                 <div class="flex-1 relative h-12 flex items-center">
                   <input pInputText type="tel" formControlName="phone" (input)="onPhoneInput($event)"
@@ -182,7 +188,7 @@
             <label class="font-semibold text-gray-700 block">Password</label>
             <div class="relative w-full">
               <i class="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 z-10 text-gray-400 shrink-0"></i>
-              <p-password formControlName="password" [toggleMask]="true" [feedback]="false" placeholder="************"
+              <p-password autocomplete="" formControlName="password" [toggleMask]="true" [feedback]="false" placeholder="************"
                 styleClass="w-full"
                 [inputStyle]="{'width': '100%', 'height': '48px', 'border-radius': '12px', 'padding-left': '3rem'}"
                 [ngClass]="{'ng-invalid ng-dirty': form.get('password')?.touched && form.get('password')?.invalid}">
@@ -242,7 +248,7 @@
             <label class="font-semibold text-gray-700 block">Confirm Password</label>
             <div class="relative w-full">
               <i class="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 z-10 text-gray-400"></i>
-              <p-password formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
+              <p-password autocomplete="" formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
                 placeholder="************" styleClass="w-full"
                 [inputStyle]="{'width':'100%', 'height':'48px', 'border-radius':'12px', 'padding-left':'3rem'}"
                 [ngClass]="{'ng-invalid ng-dirty': form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid}">
