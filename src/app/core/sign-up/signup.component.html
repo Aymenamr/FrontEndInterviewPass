@@ -1,24 +1,25 @@
-<div class="min-h-screen w-full flex bg-[#243447] font-sans items-center  justify-center relative overflow-hidden">
+<div class="min-h-screen w-full flex bg-[#243447] font-sans items-center justify-center relative overflow-hidden">
 
-  <div class="flex-1    hidden flex  text-white  lg:block">
-    <div class="   lg:fixed lg:top-1/2 lg:right-1/2 lg:-translate-y-1/2 text-center pr-8  flex flex-col  items-start    ">
-      <h1 class="text-4xl font-bold mb-4  ">Create Your Account</h1>
+  <div class="flex-1 hidden flex text-white lg:block">
+    <div class="lg:fixed lg:top-1/2 lg:right-1/2 lg:-translate-y-1/2 text-center pr-8 flex flex-col items-start">
+      <h1 class="text-4xl font-bold mb-4">Create Your Account</h1>
       <p class="text-xl opacity-80">Log In now for exclusive access!</p>
       <img src="images/illustration.png" alt="Discussion" class="mt-8 max-w-full mx-auto" />
     </div>
   </div>
 
-
-  <div class="  flex  flex-1   justify-center  items-center p-4 z-[100] w-full  ">
-    <div class="bg-white   w-full py-10 px-6 sm:px-12 rounded-[45px] shadow-2xl">
+  <div class="flex flex-1 justify-center items-center p-4 z-[100] w-full">
+    <div class="bg-white w-full py-10 px-6 sm:px-12 rounded-[45px] shadow-2xl">
 
       <div class="flex border-b-2 border-gray-100 mb-8">
         <div (click)="setRole(UserRole.HR)" [class.active-tab]="!isJobSeeker()"
-          class="flex-1 text-center py-4 font-semibold cursor-pointer transition-all text-gray-400 border-b-4 border-transparent hover:text-gray-600">
+          class="flex-1 text-center py-4 font-semibold cursor-pointer transition-all text-gray-400 border-b-4 border-transparent hover:text-gray-600"
+          [class.border-[#32B599]]="!isJobSeeker()" [class.text-gray-800]="!isJobSeeker()">
           HR
         </div>
         <div (click)="setRole(UserRole.JOBSeeker)" [class.active-tab]="isJobSeeker()"
-          class="flex-1 text-center py-4 font-semibold cursor-pointer transition-all text-gray-400 border-b-4 border-transparent hover:text-gray-600">
+          class="flex-1 text-center py-4 font-semibold cursor-pointer transition-all text-gray-400 border-b-4 border-transparent hover:text-gray-600"
+          [class.border-[#32B599]]="isJobSeeker()" [class.text-gray-800]="isJobSeeker()">
           Job Seeker
         </div>
       </div>
@@ -33,72 +34,78 @@
             <p-iconField iconPosition="left">
               <p-inputIcon styleClass="pi pi-user"></p-inputIcon>
               <input pInputText class="w-full h-12 rounded-xl border-gray-200" formControlName="name"
-                [ngClass]="{'border-red-500': f['name'].touched && f['name'].invalid}" placeholder="Your Name" />
+                [ngClass]="{'border-red-500': form.get('name')?.touched && form.get('name')?.invalid}"
+                placeholder="Your Name" />
             </p-iconField>
-            @if (f['name'].touched && f['name'].invalid) {
-            <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
-              <small class="text-red-600 flex items-center">
-                <i class="pi pi-exclamation-circle mr-1"></i>
-                @if (f['name'].errors?.['required']) { Name is required }
-                @else if (f['name'].errors?.['pattern']) { Only letters, numbers, and hyphens allowed }
-              </small>
-            </div>
+            
+            @if (form.get('name')?.touched && form.get('name')?.invalid) {
+              <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
+                <small class="text-red-600 flex items-center">
+                  <i class="pi pi-exclamation-circle mr-1"></i>
+                  @if (form.get('name')?.errors?.['required']) { Name is required }
+                  @else if (form.get('name')?.errors?.['pattern']) { Only letters, numbers, and hyphens allowed }
+                </small>
+              </div>
             }
           </div>
 
           @if (isJobSeeker()) {
-          <div class="space-y-2">
-            <label class="font-semibold text-gray-700 block">Experience Level</label>
-            <input pInputText class="w-full h-12 rounded-xl border-gray-200" type="number" formControlName="experience"
-              placeholder="Number of years"
-              [ngClass]="{'border-red-500': f['experience'].touched && f['experience'].invalid}" />
-            @if (f['experience'].touched && f['experience'].invalid) {
-            <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
-              <small class="text-red-600 flex items-center">
-                <i class="pi pi-exclamation-circle mr-1"></i> Experience level is required
-              </small>
+            <div class="space-y-2">
+              <label class="font-semibold text-gray-700 block">Experience Level</label>
+              <input pInputText class="w-full h-12 rounded-xl border-gray-200" type="number" formControlName="experience"
+                placeholder="Number of years"
+                [ngClass]="{'border-red-500': form.get('experience')?.touched && form.get('experience')?.invalid}" />
+              
+              @if (form.get('experience')?.touched && form.get('experience')?.invalid) {
+                <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
+                  <small class="text-red-600 flex items-center">
+                    <i class="pi pi-exclamation-circle mr-1"></i> Experience level is required
+                  </small>
+                </div>
+              }
             </div>
-            }
-          </div>
 
-          <div class="space-y-2">
-            <label class="font-semibold text-gray-700 block">Field</label>
-            <p-dropdown formControlName="fieldId" (onClick)="filedClicked.set(true)" [options]="fields.value()"
-              optionLabel="name" optionValue="id" placeholder="Select Field"
-              styleClass="w-full h-12 rounded-xl border-gray-200"
-              [ngClass]="{'ng-invalid ng-dirty': f['fieldId'].touched && f['fieldId'].invalid}">
-            </p-dropdown>
-          </div>
-
-          <div class="space-y-2">
-            <label class="font-semibold text-gray-700 block">Skills</label>
-            <p-autoComplete formControlName="skillIds" [suggestions]="filteredSkills()"
-              (completeMethod)="filterSkills($event)" field="name" [multiple]="true" [dropdown]="true" [unique]="true"
-              placeholder="Search skills..." styleClass="w-full"
-              inputStyleClass="!min-h-12 !rounded-xl !border-gray-200"
-              [ngClass]="{'ng-invalid ng-dirty': f['skillIds'].touched && f['skillIds'].invalid}">
-            </p-autoComplete>
-            @if (f['skillIds'].touched && f['skillIds'].invalid) {
-            <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
-              <small class="text-red-600 flex items-center">
-                <i class="pi pi-exclamation-circle mr-1"></i> Please select at least one skill
-              </small>
+            <div class="space-y-2">
+              <label class="font-semibold text-gray-700 block">Field</label>
+              <p-dropdown formControlName="fieldId" (onShow)="onFieldDropdownOpen()" [options]="fields.value()"
+                optionLabel="name" optionValue="id" placeholder="Select Field"
+                styleClass="w-full h-12 rounded-xl border-gray-200"
+                [ngClass]="{'ng-invalid ng-dirty': form.get('fieldId')?.touched && form.get('fieldId')?.invalid}">
+              </p-dropdown>
             </div>
-            }
-          </div>
+
+            <div class="space-y-2">
+              <label class="font-semibold text-gray-700 block">Skills</label>
+              <p-autoComplete formControlName="skillIds" [suggestions]="filteredSkills()"
+                (completeMethod)="filterSkills($event)" field="name" [multiple]="true" [dropdown]="true" [unique]="true"
+                placeholder="Search skills..." styleClass="w-full"
+                inputStyleClass="!min-h-12 !rounded-xl !border-gray-200"
+                [ngClass]="{'ng-invalid ng-dirty': form.get('skillIds')?.touched && form.get('skillIds')?.invalid}">
+              </p-autoComplete>
+
+              @if (form.get('skillIds')?.touched && form.get('skillIds')?.invalid) {
+                <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
+                  <small class="text-red-600 flex items-center">
+                    <i class="pi pi-exclamation-circle mr-1"></i> Please select at least one skill
+                  </small>
+                </div>
+              }
+            </div>
           } @else {
-          <div class="space-y-2">
-            <label class="font-semibold text-gray-700 block">Company</label>
-            <input pInputText class="w-full h-12 rounded-xl border-gray-200" formControlName="company"
-              [ngClass]="{'border-red-500': f['company'].touched && f['company'].invalid}" placeholder="Your Company" />
-            @if (f['company'].touched && f['company'].invalid) {
-            <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
-              <small class="text-red-600 flex items-center">
-                <i class="pi pi-exclamation-circle mr-1"></i> Company name is required
-              </small>
+            <div class="space-y-2">
+              <label class="font-semibold text-gray-700 block">Company</label>
+              <input pInputText class="w-full h-12 rounded-xl border-gray-200" formControlName="company"
+                [ngClass]="{'border-red-500': form.get('company')?.touched && form.get('company')?.invalid}"
+                placeholder="Your Company" />
+              
+              @if (form.get('company')?.touched && form.get('company')?.invalid) {
+                <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
+                  <small class="text-red-600 flex items-center">
+                    <i class="pi pi-exclamation-circle mr-1"></i> Company name is required
+                  </small>
+                </div>
+              }
             </div>
-            }
-          </div>
           }
 
           <div class="space-y-2">
@@ -106,16 +113,19 @@
             <div class="relative pb-6">
               <div class="flex flex-row items-center gap-3 w-full">
 
-                <p-dropdown [options]="countries()" [ngModel]="selectedCountry()"
-                  (ngModelChange)="selectedCountry.set($event)" [ngModelOptions]="{standalone: true}" optionLabel="name"
-                  [filter]="true" filterBy="name,dialCode" filterPlaceholder="Search (e.g. Saudi or 966)"
+                <p-dropdown [options]="countries()" 
+                  [ngModel]="selectedCountry()" 
+                  (ngModelChange)="selectedCountry.set($event)" 
+                  [ngModelOptions]="{standalone: true}" 
+                  optionLabel="name"
+                  [filter]="true" filterBy="name,dialCode" filterPlaceholder="Search..."
                   [resetFilterOnHide]="true" class="w-32 sm:w-40"
                   styleClass="w-full h-12 rounded-xl border-gray-200 bg-[#f8faff]">
 
                   <ng-template pTemplate="selectedItem">
-                    <div class="flex items-center gap-2">
-                      <span [class]="selectedCountry()?.flagClass" class="shrink-0 scale-110"></span>
-                      <span class="font-medium text-gray-700">{{selectedCountry()?.dialCode}}</span>
+                    <div class="flex items-center gap-2" *ngIf="selectedCountry()">
+                      <span [class]="selectedCountry()!.flagClass" class="shrink-0 scale-110"></span>
+                      <span class="font-medium text-gray-700">{{selectedCountry()!.dialCode}}</span>
                     </div>
                   </ng-template>
 
@@ -130,208 +140,103 @@
 
                 <div class="flex-1 relative h-12 flex items-center">
                   <input pInputText type="tel" formControlName="phone" (input)="onPhoneInput($event)"
-                    [placeholder]="phonePlaceholder()" class="flex-1 h-12 rounded-xl border-gray-200 px-4"
-                    [ngClass]="{'border-red-500': f['phone'].touched && f['phone'].invalid}" />
-
-
-
+                    [placeholder]="phonePlaceholder()" 
+                    class="flex-1 h-12 rounded-xl border-gray-200 px-4"
+                    [ngClass]="{'border-red-500': form.get('phone')?.touched && form.get('phone')?.invalid}" />
                 </div>
               </div>
 
-              @if (f['phone'].touched && f['phone'].invalid) {
-              <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-2">
-                <small class="text-red-600 flex items-center">
-                  <i class="pi pi-exclamation-circle mr-1"></i>
-                  @if (f['phone'].errors?.['required']) { Phone number is required }
-                  @else { Invalid format for {{selectedCountry()?.name}} }
-                </small>
-              </div>
+              @if (form.get('phone')?.touched && form.get('phone')?.invalid) {
+                <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-2">
+                  <small class="text-red-600 flex items-center">
+                    <i class="pi pi-exclamation-circle mr-1"></i>
+                    @if (form.get('phone')?.errors?.['required']) { Phone number is required }
+                    @else { Invalid format for {{selectedCountry()?.name}} }
+                  </small>
+                </div>
               }
             </div>
           </div>
+
           <div class="space-y-2">
             <label class="font-semibold text-gray-700 block">Email</label>
             <p-iconField iconPosition="left">
               <p-inputIcon styleClass="pi pi-envelope"></p-inputIcon>
               <input pInputText class="w-full h-12 rounded-xl border-gray-200" formControlName="email"
-                [ngClass]="{'border-red-500': f['email'].touched && f['email'].invalid}"
+                [ngClass]="{'border-red-500': form.get('email')?.touched && form.get('email')?.invalid}"
                 placeholder="example@gmail.com" />
             </p-iconField>
-            @if (f['email'].touched && f['email'].invalid) {
-            <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
-              <small class="text-red-600 flex items-center">
-                <i class="pi pi-exclamation-circle mr-1"></i>
-                @if (f['email'].errors?.['required']) { Email is required }
-                @else { Please enter a valid email address }
-              </small>
-            </div>
+            
+            @if (form.get('email')?.touched && form.get('email')?.invalid) {
+              <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
+                <small class="text-red-600 flex items-center">
+                  <i class="pi pi-exclamation-circle mr-1"></i>
+                  @if (form.get('email')?.errors?.['required']) { Email is required }
+                  @else { Please enter a valid email address }
+                </small>
+              </div>
             }
           </div>
 
           <div class="space-y-2">
+            <label class="font-semibold text-gray-700 block">Password</label>
+            <div class="relative w-full">
+              <i class="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 z-10 text-gray-400 shrink-0"></i>
+              <p-password formControlName="password" [toggleMask]="true" [feedback]="false" placeholder="************"
+                styleClass="w-full"
+                [inputStyle]="{'width': '100%', 'height': '48px', 'border-radius': '12px', 'padding-left': '3rem'}"
+                [ngClass]="{'ng-invalid ng-dirty': form.get('password')?.touched && form.get('password')?.invalid}">
+              </p-password>
+            </div>
 
-  <!-- LABEL -->
-  <label class="font-semibold text-gray-700 block">
-    Password
-  </label>
+            @if (form.get('password')?.touched && form.get('password')?.errors?.['required']) {
+              <small class="text-red-600 flex items-center gap-1 mt-1">
+                <i class="pi pi-exclamation-circle shrink-0"></i> Password is required
+              </small>
+            }
 
-  <!-- INPUT -->
-  <div class="relative w-full">
-    <i
-      class="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 z-10 text-gray-400 shrink-0">
-    </i>
+            @if (form.get('password')?.dirty && !form.get('password')?.errors?.['required'] && form.get('password')?.errors?.['passwordStrength']) {
+              <div class="bg-red-50 border border-red-200 p-3 rounded-xl mt-2 space-y-2">
+                <small class="text-red-600 font-bold flex items-center gap-1">
+                  <i class="pi pi-shield shrink-0"></i> Security Requirements
+                </small>
 
-    <p-password
-      formControlName="password"
-      [toggleMask]="true"
-      [feedback]="false"
-      placeholder="************"
-      styleClass="w-full"
-      [inputStyle]="{
-        'width': '100%',
-        'height': '48px',
-        'border-radius': '12px',
-        'padding-left': '3rem'
-      }"
-      [ngClass]="{
-        'ng-invalid ng-dirty':
-          f['password'].touched && f['password'].invalid
-      }">
-    </p-password>
-  </div>
+                <div class="grid grid-cols-2 gap-1 text-sm">
+                  <div class="flex items-center gap-1"
+                    [class.text-green-600]="form.get('password')?.errors?.['passwordStrength']?.isLongEnough"
+                    [class.text-red-400]="!form.get('password')?.errors?.['passwordStrength']?.isLongEnough">
+                    <i [class]="form.get('password')?.errors?.['passwordStrength']?.isLongEnough ? 'pi pi-check-circle' : 'pi pi-times-circle'"></i>
+                    8+ Characters
+                  </div>
+                  <div class="flex items-center gap-1"
+                    [class.text-green-600]="form.get('password')?.errors?.['passwordStrength']?.hasUpperCase"
+                    [class.text-red-400]="!form.get('password')?.errors?.['passwordStrength']?.hasUpperCase">
+                    <i [class]="form.get('password')?.errors?.['passwordStrength']?.hasUpperCase ? 'pi pi-check-circle' : 'pi pi-times-circle'"></i>
+                    Uppercase
+                  </div>
+                  <div class="flex items-center gap-1"
+                    [class.text-green-600]="form.get('password')?.errors?.['passwordStrength']?.hasLowerCase"
+                    [class.text-red-400]="!form.get('password')?.errors?.['passwordStrength']?.hasLowerCase">
+                    <i [class]="form.get('password')?.errors?.['passwordStrength']?.hasLowerCase ? 'pi pi-check-circle' : 'pi pi-times-circle'"></i>
+                    Lowercase
+                  </div>
+                  <div class="flex items-center gap-1"
+                    [class.text-green-600]="form.get('password')?.errors?.['passwordStrength']?.hasNumeric"
+                    [class.text-red-400]="!form.get('password')?.errors?.['passwordStrength']?.hasNumeric">
+                    <i [class]="form.get('password')?.errors?.['passwordStrength']?.hasNumeric ? 'pi pi-check-circle' : 'pi pi-times-circle'"></i>
+                    Number
+                  </div>
+                </div>
 
-  <!-- 🔴 REQUIRED ERROR -->
-  @if (f['password'].touched && f['password'].errors?.['required']) {
-    <small class="text-red-600 flex items-center gap-1 mt-1">
-      <i class="pi pi-exclamation-circle shrink-0"></i>
-      Password is required
-    </small>
-  }
-
-  <!-- 🟡 STRENGTH VALIDATION -->
-  @if (
-    f['password'].dirty &&
-    !f['password'].errors?.['required'] &&
-    f['password'].errors?.['passwordStrength']
-  ) {
-    <div class="bg-red-50 border border-red-200 p-3 rounded-xl mt-2 space-y-2">
-
-      <small class="text-red-600 font-bold flex items-center gap-1">
-        <i class="pi pi-shield shrink-0"></i>
-        Security Requirements
-      </small>
-
-      <div class="grid grid-cols-2 gap-1 text-sm">
-        <div
-          class="flex items-center gap-1"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.isLongEnough
-              ? 'text-green-600'
-              : 'text-red-400'
-          ">
-          <i
-            [class]="
-              f['password'].errors?.['passwordStrength']?.isLongEnough
-                ? 'pi pi-check-circle'
-                : 'pi pi-times-circle'
-            ">
-          </i>
-          8+ Characters
-        </div>
-
-        <div
-          class="flex items-center gap-1"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.hasUpperCase
-              ? 'text-green-600'
-              : 'text-red-400'
-          ">
-          <i
-            [class]="
-              f['password'].errors?.['passwordStrength']?.hasUpperCase
-                ? 'pi pi-check-circle'
-                : 'pi pi-times-circle'
-            ">
-          </i>
-          Uppercase
-        </div>
-
-        <div
-          class="flex items-center gap-1"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.hasLowerCase
-              ? 'text-green-600'
-              : 'text-red-400'
-          ">
-          <i
-            [class]="
-              f['password'].errors?.['passwordStrength']?.hasLowerCase
-                ? 'pi pi-check-circle'
-                : 'pi pi-times-circle'
-            ">
-          </i>
-          Lowercase
-        </div>
-
-        <div
-          class="flex items-center gap-1"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.hasNumeric
-              ? 'text-green-600'
-              : 'text-red-400'
-          ">
-          <i
-            [class]="
-              f['password'].errors?.['passwordStrength']?.hasNumeric
-                ? 'pi pi-check-circle'
-                : 'pi pi-times-circle'
-            ">
-          </i>
-          Number
-        </div>
-      </div>
-
-      <!-- STRENGTH BAR -->
-      <div class="flex gap-1 h-1.5 mt-2">
-        <div
-          class="flex-1 rounded-full transition-colors duration-500"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.isLongEnough
-              ? 'bg-green-500'
-              : 'bg-gray-200'
-          ">
-        </div>
-        <div
-          class="flex-1 rounded-full transition-colors duration-500"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.hasUpperCase
-              ? 'bg-green-500'
-              : 'bg-gray-200'
-          ">
-        </div>
-        <div
-          class="flex-1 rounded-full transition-colors duration-500"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.hasLowerCase
-              ? 'bg-green-500'
-              : 'bg-gray-200'
-          ">
-        </div>
-        <div
-          class="flex-1 rounded-full transition-colors duration-500"
-          [class]="
-            f['password'].errors?.['passwordStrength']?.hasNumeric
-              ? 'bg-green-500'
-              : 'bg-gray-200'
-          ">
-        </div>
-      </div>
-
-    </div>
-  }
-
-</div>
-
+                <div class="flex gap-1 h-1.5 mt-2">
+                  <div class="flex-1 rounded-full transition-colors duration-500" [class.bg-green-500]="form.get('password')?.errors?.['passwordStrength']?.isLongEnough" [class.bg-gray-200]="!form.get('password')?.errors?.['passwordStrength']?.isLongEnough"></div>
+                  <div class="flex-1 rounded-full transition-colors duration-500" [class.bg-green-500]="form.get('password')?.errors?.['passwordStrength']?.hasUpperCase" [class.bg-gray-200]="!form.get('password')?.errors?.['passwordStrength']?.hasUpperCase"></div>
+                  <div class="flex-1 rounded-full transition-colors duration-500" [class.bg-green-500]="form.get('password')?.errors?.['passwordStrength']?.hasLowerCase" [class.bg-gray-200]="!form.get('password')?.errors?.['passwordStrength']?.hasLowerCase"></div>
+                  <div class="flex-1 rounded-full transition-colors duration-500" [class.bg-green-500]="form.get('password')?.errors?.['passwordStrength']?.hasNumeric" [class.bg-gray-200]="!form.get('password')?.errors?.['passwordStrength']?.hasNumeric"></div>
+                </div>
+              </div>
+            }
+          </div>
 
           <div class="space-y-2">
             <label class="font-semibold text-gray-700 block">Confirm Password</label>
@@ -340,37 +245,36 @@
               <p-password formControlName="confirmPassword" [toggleMask]="true" [feedback]="false"
                 placeholder="************" styleClass="w-full"
                 [inputStyle]="{'width':'100%', 'height':'48px', 'border-radius':'12px', 'padding-left':'3rem'}"
-                [ngClass]="{'ng-invalid ng-dirty': f['confirmPassword'].touched && f['confirmPassword'].invalid}">
+                [ngClass]="{'ng-invalid ng-dirty': form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid}">
               </p-password>
             </div>
-         
 
-             @if (f['confirmPassword'].touched && f['confirmPassword'].invalid) {
-            <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
-              <small class="text-red-600 flex items-center">
-                <i class="pi pi-exclamation-circle mr-1"></i>
-                @if (f['confirmPassword'].errors?.['required']) { Confirm password is required }
-                @else { Passwords do not match }
-              </small>
-            </div>
+            @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
+              <div class="bg-red-50 border border-red-200 p-2 rounded-lg mt-1">
+                <small class="text-red-600 flex items-center">
+                  <i class="pi pi-exclamation-circle mr-1"></i>
+                  @if (form.get('confirmPassword')?.errors?.['required']) { Confirm password is required }
+                  @else { Passwords do not match }
+                </small>
+              </div>
             }
-
           </div>
 
           <p-toast position="top-center"></p-toast>
+          
           <button pButton type="submit" label="Signup"
-            class=" signup w-full h-[54px] bg-[#32B599] border-none rounded-xl text-lg font-bold hover:bg-[#2aa188] transition-colors"
+            class="signup w-full h-[54px] bg-[#32B599] border-none rounded-xl text-lg font-bold hover:bg-[#2aa188] transition-colors"
             [loading]="loading()" [disabled]="form.invalid || loading()">
           </button>
 
         </form>
 
         <p-divider align="center" styleClass="my-8"><b class="text-gray-400">OR</b></p-divider>
+        
         <div class="flex flex-col items-center">
           <div class="flex flex-row gap-3 mb-8">
             <button pButton class="p-button-outlined w-28 h-12 rounded-xl border-gray-300 bg-white hover:bg-gray-50">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google"
-                class="w-5">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="w-5">
             </button>
             <button pButton class="p-button-outlined w-28 h-12 rounded-xl border-gray-300 bg-white hover:bg-gray-50">
               <i class="pi pi-apple text-black text-xl"></i>
