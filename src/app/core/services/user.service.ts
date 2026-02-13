@@ -1,17 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environments.prod';
-
+import { Injectable, inject } from '@angular/core';
+import { RegisterPayload } from '../models/user.model';
+import { BaseApiService } from './base-api.service';
 @Injectable({
     providedIn: 'root'
 })
-export class UserService {
-     private readonly apiUrl = `${environment.baseUrl}/User`;
-
-    constructor(private http: HttpClient) { }
-
-    register(payload: any): Observable<any> {
-        return this.http.post<any>(this.apiUrl, payload);
+export class UserService extends BaseApiService {
+    private readonly apiUrl = `${this.baseUrl}/User`;
+    register(user: RegisterPayload) {
+        return this.http.post(this.apiUrl, user);
     }
 }
