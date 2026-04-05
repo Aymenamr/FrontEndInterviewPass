@@ -1,0 +1,7 @@
+/* signup.component.css */
+
+/* Tab Active State */
+.active-tab {
+    color: #32B599 !important;
+    border-bottom-color: #32B599 !important;
+}
