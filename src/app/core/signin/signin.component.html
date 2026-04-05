@@ -1,0 +1,80 @@
+<div class="main-wrapper">
+  <div class="login-card">
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h1>Welcome Back !</h1>
+        <p>Log in now for exclusive access!</p>
+       <img src="login-illustration.jpeg" alt="illustration" class="hero-img">
+ </div>
+    </div>
+
+     <div class="form-section">
+     <p-card >
+      <div class="tabs">
+        <span class="tab" [ngClass]="{'active': selectedUserType === 0}"(click)="setUserType(0)"> HR</span>
+        <span class="tab" [ngClass]="{'active': selectedUserType === 1}" (click)="setUserType(1)"> Job Seeker</span>
+      </div>
+
+      <div class="form-container">
+        <h3>Login</h3>
+        <p class="desc">Lorem ipsum dolor sit amet</p>
+
+   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+           <label for="email">Email</label>
+            <p-iconfield>
+              <p-inputicon class="pi pi-envelope" />
+              <input type="text" formControlName="email" pInputText  name="email" placeholder="example@gmail.com"/>
+            </p-iconfield>
+              <small  *ngIf="email.invalid && (email.dirty || email.touched)">
+               <div *ngIf="email.errors?.['required']">Email is requierd</div>
+               <div *ngIf="email.errors?.['email']">Email is should be valid</div>
+             </small>
+        </div>
+         
+         <div class="field">
+           <label for="password">Password</label>
+           <p-iconfield>
+           <p-inputicon class="pi pi-lock" />
+           <p-password [toggleMask]="true" type="password" formControlName="password" pInputText   name="password" placeholder="••••••••"/>
+          </p-iconfield>
+            <small  *ngIf="password.invalid && (password.dirty || password.touched)">
+               <div *ngIf="password.errors?.['required']">Password is requierd</div>
+             </small>
+         </div>
+
+         <div class="options-row">
+            <div class="remember">
+              <p-checkbox inputId="rememberMe"formControlName="rememberMe"  [binary]="true"></p-checkbox>
+              <label for="rememberMe">Remember me</label>
+            </div>
+            <a class="forgot-password" >Forgot password?</a>
+          </div>
+
+          <div *ngIf="errorMessage" class="error-msg">
+          {{ errorMessage }}
+        </div>
+
+         <button
+          pButton
+          type="submit"
+          label="Login"
+          class="btn-login">
+        </button>
+
+          <div class="divider"><span>OR</span></div>
+
+          <div class="social-login">
+            <a pButton icon="pi pi-google" class="google p-button-outlined p-button-secondary"></a>
+            <a pButton icon="pi pi-apple" class="apple p-button-outlined p-button-secondary"></a>
+            <a pButton icon="pi pi-linkedin" class="linkedin p-button-outlined p-button-secondary"></a>
+          </div>
+
+          <p class="footer-text">You don't have an account? <a routerLink="/register">Sign up</a></p>
+  </form>
+  
+      </div>
+     </p-card>
+    </div> 
+  </div>
+</div>
